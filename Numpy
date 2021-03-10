@@ -1,0 +1,185 @@
+# Numpy
+# NumPy is the fundamental package for scientific computing in Python. It is a Python library that provides a multidimensional array object, various derived objects (such as masked arrays and matrices), and an assortment of routines for fast operations on arrays.
+
+# At the core of the NumPy package, is the ndarray object. This encapsulates n-dimensional arrays of homogeneous data types, with many operations being performed in compiled code for performance.
+
+import numpy as np
+
+# Arrays
+lst = [[1, 2, 3], [4, 5, 6]] # 2x3
+a = np.array(lst) # create array from lists
+print(type(a)) # class 'numpy.ndarray'
+print(a)
+print(a[0]) # first row
+print(a[0][1]) # first row, second column
+print(a.shape) # 2 x 3
+print(a.ndim) # 2 dimensions
+print(a.dtype) # data type of the elements of array
+print(a.size) # total number of elements in the matrix
+print('\n')
+
+b = np.arange(0, 10, 2, dtype='float') # create 1d array, [start, stop)
+print(type(b)) # class 'numpy.ndarray'
+print(b)
+print(b.shape)
+
+c = np.linspace(1.5, 2.5, 9) # create 1d array with float, [start, stop]
+print(type(c)) # class 'numpy.ndarray'
+print(c)
+print(c.shape)
+
+d = np.zeros((2, 3)) # all zeros
+print(type(d)) # class 'numpy.ndarray'
+print(d)
+
+e = np.ones((2, 3)) # all ones
+print(type(e)) # class 'numpy.ndarray'
+print(e)
+
+f = np.full((2, 3), 9) # constant matrix
+print(type(f)) # class 'numpy.ndarray'
+print(f)
+
+g = np.eye(3) # 3 x 3 identity matrix
+print(type(g)) # class 'numpy.ndarray'
+print(g)
+print('\n')
+
+h = b.reshape(5, 1)
+print('h.shape:', h.shape)
+print('\n')
+#reshape: transform
+i = c.reshape(-1, 1)
+print('c:', c)
+print('i:', i)
+print('i.shape:', i.shape)
+print('\n')
+print('d:', d)
+j = d.reshape((2, 3, 1))
+print('j:', j)
+print('j.shape:', j.shape)
+print('\n')
+# (Advanced)show all the values
+# np.set_printoptions(threshold = np.nan) 
+print(np.arange(10000).reshape((100, 100)))
+
+# https://www.w3resource.com/numpy/manipulation/reshape.php
+x = np.array([[2,3,4], [5,6,7]])      
+print(x)
+y1 = np.reshape(x, (3, 2))
+print(y1)
+y2 = np.reshape(x, (3, 2), order='C')
+print(y2)
+y3 = np.reshape(x, (3, 2), order='F')
+print(y3)
+y4 = np.reshape(x, 6, order='C')
+print(y4)
+y5 = np.reshape(x, (6, 1))
+print(y5)
+y6 = np.reshape(x, (3, -1))
+print(y6)
+
+y4 = np.reshape(x, 6, order='C')
+print('y4:', y4)
+y4a = np.reshape(x, 6, order='F')
+print('y4a:', y4)
+y7 = np.reshape(x, (1, -1))
+print('y7', y7)
+
+print(np.arange(16).reshape((4, 4)))
+old = np.arange(16).reshape((4, 4))
+new = np.reshape(old, 16)
+print('new: ', new)
+new2 = sorted(new, reverse=True)
+print('new2: ', new2)
+
+# **Indexing and Slicing**
+a = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])
+print('a: ', a)
+# (Advanced)Two ways of accessing the data in the middle row of the array.
+# Mixing integer indexing with slices yields an array of lower rank,
+# while using only slices yields an array of the same rank as the
+# original array:
+r1 = a[0, :] # rank 1 view of the first row
+r2 = a[0:1, :] # rank 2 view of the first row 
+print('r1, r1.shape: ', r1, r1.shape)
+print('r2, r2.shape: ', r2, r2.shape)
+
+r1 = r1.reshape(-1, r1.shape[0])
+print('r1, r1.shape: ', r1, r1.shape)
+
+# boolean masking
+
+a = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])
+print('a:', a)
+a_idx1 = (a < 5) # return the boolean array that satisfies the conidtion
+print('a_idx1: ', a_idx1)
+a_idx2 = (a >=5) & (a <= 10) # return the boolean array that satisfies the conidtion
+print('a_idx2: ', a_idx2)
+
+print('a[a_idx1]: ', a[a_idx1]) # return the corresponding array
+print('a[a_idx2]: ', a[a_idx2]) # return the corresponding array
+
+print(a[(a > 5) & (a < 10)]) # single statement
+
+# Math
+a = np.array([[10, 11, 12], [13, 14, 15]])
+print(a.shape)
+print(a)
+b = np.arange(1, 7).reshape((2, 3))
+print('b.shape: ', b.shape)
+print('b: ', b)
+
+# element-wise calculation:
+print(a + b)
+print(a - b)
+print(np.add(a, b))
+print(a * b)
+
+# Matrix product
+print('\n')
+print(np.dot(a, b.transpose())) # 2x3, 3x2
+print(np.dot(a.transpose(), b)) # 3x2, 2x3
+print(a.T.dot(b)) # 3x2, 2x3
+
+# calculation along row or column index, calculate by the index of the axis which is set
+print(np.sum(a, axis = 0)) # sum along row
+print(np.sum(a, axis = 1)) # sum along column
+print('\n')
+# (Advanced+)broadcasting
+# https://docs.scipy.org/doc/numpy-1.15.0/user/basics.broadcasting.html
+a = np.array([[10, 11, 12], [13, 14, 15]])
+print(a)
+
+a += 1 # add 1 to all the elements
+print(a)
+
+a += np.array([-1, -2, -3]) # add [-1, -2, -3] to all columns for each row
+print(a)
+
+a += np.array([[-1], [-2]]) # add [[-1], [-2]] to all rows for each column
+print(a)
+print('\n')
+# Two dimensions are compatible when
+# they are equal, or
+# one of them is 1
+a = np.array([1, 2, 3]) # 1x3
+b = np.array([[4], [5], [6]]) # 3x1
+
+print(a + b)
+print('\n')
+
+# Random
+np.random.seed(42) # same seed can repro the same scenario so it is deterministic
+
+print('np.random.rand(2,2):', np.random.rand(2,2)) # Random numbers between [0,1) of shape 2,2
+print('np.random.randn(2,2): ', np.random.randn(2,2)) # Normal distribution with mean=0 and variance=1 of shape 2,2
+print('np.random.randint(0, 10, size=[2,2]: ', np.random.randint(0, 10, size=[2,2])) # Random integers between [0, 10) of shape 2,2
+print('np.random.random(): ', np.random.random()) # One random number between [0,1)
+print('np.random.random(size=[2,2]): ', np.random.random(size=[2,2])) # Random numbers between [0,1) of shape 2,2
+print('\n')
+print("np.random.choice(['a', 'e', 'i', 'o', 'u'], size=10: ", np.random.choice(['a', 'e', 'i', 'o', 'u'], size=10)) # Pick 10 items from a given list, with equal probability
+print('\n')
+print("np.random.choice(['a', 'e', 'i', 'o', 'u'], size=10, p=[0.3, .1, 0.1, 0.4, 0.1]): ", np.random.choice(['a', 'e', 'i', 'o', 'u'], size=10, p=[0.3, .1, 0.1, 0.4, 0.1])) # Pick 10 items from a given list with a predefined probability 'p'
+print('\n')
+print('np.random.choice(np.arange(100),size=[10,3],replace=True): ', np.random.choice(np.arange(100),size=[10,3],replace=True)) # get 10x3 random samples from [0-99] with replacement 
